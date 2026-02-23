@@ -1,6 +1,9 @@
 import { apiClient } from '../api/config';
 import { handleApiError } from '../api/error-handler';
 import { LedgerResponse } from '../types/ledger';
+import { File, Paths } from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
  * Get ledger items for the authenticated user
@@ -41,13 +44,32 @@ export const initAddMoney = async (amount: number): Promise<{ status: boolean; m
     }
 }
 
-export const downloadStatement = async (): Promise<{ status: boolean; path: string }> => {
-    try {
-        const response = await apiClient.get<{ status: boolean; path: string }>(
-            '/partner/download-statement',
-        );
-        return response.data;
-    } catch (error) {
-        return handleApiError(error);
-    }
-}
+export const downloadStatement = async () => {
+  try {
+    console.log('Downloading statement...');
+
+    const token = await AsyncStorage.getItem('token');
+
+    const fileName = `ledger-${Date.now()}.xlsx`;
+    const destination = new File(Paths.document, fileName);
+
+    const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL || 'https://upworx03.upworx.in/api';
+
+    await File.downloadFileAsync(
+      `${API_BASE_URL}/partner/download-statement`,
+      destination,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    await Sharing.shareAsync(destination.uri);
+
+    return { status: true };
+  } catch (error) {
+    console.log('Download error:', error);
+    return { status: false };
+  }
+};

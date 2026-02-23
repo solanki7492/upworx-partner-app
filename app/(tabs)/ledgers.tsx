@@ -1,5 +1,5 @@
 import { useAuth } from '@/contexts/auth-context';
-import { getLedgerItems, initAddMoney, requestWithdrawal } from '@/lib/services/ledger';
+import { getLedgerItems, initAddMoney, requestWithdrawal, downloadStatement } from '@/lib/services/ledger';
 import { LedgerItem } from '@/lib/types/ledger';
 import { BrandColors } from '@/theme/colors';
 import { Ionicons } from '@expo/vector-icons';
@@ -114,6 +114,14 @@ export default function LedgerScreen() {
             setWithdrawing(false);
         }
     };
+
+    const handleDownloadStatement = async () => {
+        try {
+            await downloadStatement();
+        } catch (e) {
+            Alert.alert('Error', 'Failed to download statement');
+        }
+    }
 
     const truncateTxnId = (id: string, start = 6, end = 4) => {
         if (!id) return '-';
@@ -336,7 +344,7 @@ export default function LedgerScreen() {
                     />
                 </View>
 
-                <ActionButton icon="download-outline" title="Statement" />
+                <ActionButton icon="download-outline" title="Statement" onPress={handleDownloadStatement} />
             </View>
 
             {/* Ledger List */}
