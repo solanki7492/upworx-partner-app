@@ -111,34 +111,41 @@ export default function EarningsScreen() {
             </View>
 
             {/* LIST */}
-            <FlatList
-                data={earnings}
-                keyExtractor={(item) => item.id.toString()}
-                contentContainerStyle={{ paddingBottom: 40 }}
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-                onEndReached={() => {
-                    if (hasMore && !loadingMore) {
-                        loadEarnings(page + 1);
+            {
+            earnings.length === 0 && !loading ? (
+                <View style={styles.center}>
+                    <Text style={{ color: BrandColors.mutedText }}>No earnings found.</Text>
+                </View>
+            ) : (
+                <FlatList
+                    data={earnings}
+                    keyExtractor={(item) => item.id.toString()}
+                    contentContainerStyle={{ paddingBottom: 40 }}
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    onEndReached={() => {
+                        if (hasMore && !loadingMore) {
+                            loadEarnings(page + 1);
+                        }
+                    }}
+                    onEndReachedThreshold={0.3}
+                    ListFooterComponent={
+                        loadingMore ? (
+                            <ActivityIndicator
+                                style={{ marginVertical: 16 }}
+                                color={BrandColors.primary}
+                            />
+                        ) : null
                     }
-                }}
-                onEndReachedThreshold={0.3}
-                ListFooterComponent={
-                    loadingMore ? (
-                        <ActivityIndicator
-                            style={{ marginVertical: 16 }}
-                            color={BrandColors.primary}
+                    renderItem={({ item, index }) => (
+                        <EarningCard
+                            item={item}
+                            index={index}
+                            earnings={earnings}
                         />
-                    ) : null
-                }
-                renderItem={({ item, index }) => (
-                    <EarningCard
-                        item={item}
-                        index={index}
-                        earnings={earnings}
-                    />
-                )}
-            />
+                    )}
+                />
+            )}
         </View>
     );
 }

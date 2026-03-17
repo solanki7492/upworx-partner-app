@@ -37,12 +37,13 @@ export default function OtpScreen() {
             const response = await verifyOtp({
                 otp: otpCode,
                 mobile: mobile as string,
+                type: 2,
             });
 
             if (response.status) {
                 await authLogin(response.token, response.user, role as 'CUSTOMER' | 'PARTNER');
                 Alert.alert('Success', response.message);
-                router.replace('/(tabs)');
+                router.replace('/(tabs)/leads');
             } else {
                 Alert.alert('Error', response.message || 'OTP verification failed');
             }

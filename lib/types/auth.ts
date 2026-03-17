@@ -35,6 +35,7 @@ export interface RegisterRequest {
 export interface VerifyOtpRequest {
     otp: string;
     mobile: string;
+    type: number;
 }
 
 export interface ResendOtpRequest {

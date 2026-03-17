@@ -8,6 +8,22 @@
     "scheme": "upworx-partner",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "plugins": [
+    "expo-router",
+    [
+      "expo-splash-screen",
+      {
+        "image": "./assets/icons/splash-icon-dark.png",
+        "imageWidth": 200,
+        "resizeMode": "contain",
+        "backgroundColor": "#ffffff",
+        "dark": {
+          "image": "./assets/icons/splash-icon-dark.png",
+          "backgroundColor": "#000000"
+        }
+      }
+    ]
+  ],
     "splash": {
       "image": "./assets/icons/splash-icon-dark.png",
       "resizeMode": "contain",
@@ -51,30 +67,8 @@
     "output": "static",
     "favicon": "./assets/images/favicon.png"
   },
-  "plugins": [
-    "expo-router",
-    [
-      "expo-splash-screen",
-      {
-        "image": "./assets/icons/splash-icon-dark.png",
-        "imageWidth": 200,
-        "resizeMode": "contain",
-        "backgroundColor": "#ffffff",
-        "dark": {
-          "image": "./assets/images/splash-icon-dark.png",
-          "backgroundColor": "#000000"
-        }
-      }
-    ]
-  ],
   "experiments": {
     "typedRoutes": true,
     "reactCompiler": true
-  },
-  "extra": {
-    "router": {},
-    "eas": {
-      "projectId": "533381a3-7349-44fc-9f7c-ee01e2dc1bf8"
-    }
   }
 }

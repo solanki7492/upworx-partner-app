@@ -348,6 +348,11 @@ export default function LedgerScreen() {
             </View>
 
             {/* Ledger List */}
+            {ledger.length === 0 ? (
+                <View style={styles.center}>
+                    <Text style={{ color: BrandColors.mutedText }}>No ledger entries found.</Text>
+                </View>
+            ) : (
             <FlatList
                 data={ledger}
                 keyExtractor={(item) => item.id.toString()}
@@ -363,7 +368,7 @@ export default function LedgerScreen() {
                         />
                     ) : null
                 }
-            />
+            />)}
 
             <Modal
                 transparent
