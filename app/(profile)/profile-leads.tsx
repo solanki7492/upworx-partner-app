@@ -3,18 +3,28 @@ import LeadsContent, {
 } from '@/components/screens/leads-content';
 import { BrandColors } from '@/theme/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export default function LeadsScreen() {
+export default function ProfileLeadsScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const leadsRef = useRef<LeadsContentRef>(null);
   const [hasFilters, setHasFilters] = useState(false);
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
+      {/* Header */}
       <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={styles.backButton}
+          activeOpacity={0.7}
+        >
+          <Ionicons name="arrow-back" size={24} color={BrandColors.text} />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Leads</Text>
         <View style={styles.headerActions}>
           <TouchableOpacity
@@ -23,7 +33,7 @@ export default function LeadsScreen() {
           >
             <Ionicons
               name="filter-outline"
-              size={18}
+              size={20}
               color={BrandColors.primary}
             />
           </TouchableOpacity>
@@ -35,6 +45,8 @@ export default function LeadsScreen() {
           )}
         </View>
       </View>
+
+      {/* Content */}
       <LeadsContent ref={leadsRef} onFiltersChange={setHasFilters} />
     </View>
   );
@@ -52,27 +64,36 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 16,
   },
+  backButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
   headerTitle: {
-    fontSize: 28,
+    fontSize: 20,
     fontWeight: '700',
     color: BrandColors.text,
+    flex: 1,
+    textAlign: 'center',
+    marginLeft: -40,
   },
   headerActions: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 8,
   },
   filterBtn: {
-    flexDirection: 'row',
-    gap: 6,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: `${BrandColors.primary}15`,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
     borderRadius: 20,
   },
   clearText: {
     color: BrandColors.danger,
     fontWeight: '600',
+    fontSize: 14,
   },
 });

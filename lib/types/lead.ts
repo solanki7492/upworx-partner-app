@@ -46,6 +46,11 @@ export interface Lead {
   partner_job: PartnerJob | null;
   order_status: OrderStatus;
   order: Order;
+
+  transact:{
+    trans_status: string;
+    trans_mode: string;
+  }
 }
 
 export interface LeadServiceData {
