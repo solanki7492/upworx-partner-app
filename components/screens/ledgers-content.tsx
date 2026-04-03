@@ -138,8 +138,24 @@ export default function LedgersContent() {
     setTimeout(() => setShowFullTxn(false), 3000);
   };
 
-  const renderItem = ({ item }: { item: LedgerItem }) => {
+  const renderItem = ({ item, index }: { item: LedgerItem; index: number }) => {
     const isDebit = item.nature === '1';
+
+    // Calculate running balance up to this point
+    let runningBalance = 0;
+    for (let i = 0; i <= index; i++) {
+      const lead = ledger[i];
+      if (
+        (lead.trans_status === '1' || lead.trans_status === '2') &&
+        (lead.trans_mode === 'online' || lead.trans_mode === 'ledger')
+      ) {
+        if (lead.nature === '2') {
+          runningBalance += lead.amount;
+        } else {
+          runningBalance -= lead.amount;
+        }
+      }
+    }
 
     const statusText =
       item.trans_status === '1'
@@ -271,6 +287,24 @@ export default function LedgersContent() {
               item.trans_mode === 'Cash' ? '-' : isDebit ? 'Debit' : 'Credit'
             }
           />
+        </View>
+
+        {/* RUNNING BALANCE */}
+        <View style={styles.balanceSection}>
+          <Text style={styles.balanceLabel}>Ledger Balance</Text>
+          <Text
+            style={[
+              styles.balanceValue,
+              {
+                color:
+                  runningBalance >= 0
+                    ? BrandColors.success
+                    : BrandColors.danger,
+              },
+            ]}
+          >
+            ₹ {runningBalance.toFixed(2)}
+          </Text>
         </View>
       </View>
     );
@@ -634,8 +668,10 @@ const styles = StyleSheet.create({
   metaSection: {
     marginTop: 12,
     borderTopWidth: 1,
+    borderBottomWidth: 1,
+    marginBottom: 6,
+    paddingVertical: 8,
     borderColor: BrandColors.border,
-    paddingTop: 8,
   },
 
   metaRow: {
@@ -653,6 +689,28 @@ const styles = StyleSheet.create({
   metaValue: {
     fontSize: 12,
     color: BrandColors.mutedText,
+  },
+
+  balanceSection: {
+    marginTop: 6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: BrandColors.background,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 6,
+  },
+
+  balanceLabel: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: BrandColors.text,
+  },
+
+  balanceValue: {
+    fontSize: 16,
+    fontWeight: '700',
   },
 
   modalOverlay: {

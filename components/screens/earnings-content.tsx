@@ -216,6 +216,9 @@ function EarningCard({
           />
         </>
       )}
+
+      <Divider />
+      <Row label="Total" value={runningTotal} bold highlighted />
     </View>
   );
 }
@@ -224,16 +227,18 @@ function Row({
   label,
   value,
   bold = false,
+  highlighted = false,
 }: {
   label: string;
   value?: number;
   bold?: boolean;
+  highlighted?: boolean;
 }) {
   const v = value ?? 0;
   const isPositive = v >= 0;
 
   return (
-    <View style={styles.row}>
+    <View style={[styles.row, highlighted && styles.highlightedRow]}>
       <Text style={[styles.rowLabel, bold && styles.bold]}>{label}</Text>
       <Text
         style={[
@@ -242,7 +247,7 @@ function Row({
           { color: isPositive ? BrandColors.success : BrandColors.danger },
         ]}
       >
-        {isPositive ? '+' : '-'} ₹{Math.abs(v).toFixed(2)}
+        {isPositive ? '' : '-'} ₹{Math.abs(v).toFixed(2)}
       </Text>
     </View>
   );
@@ -333,5 +338,12 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     color: BrandColors.text,
+  },
+  highlightedRow: {
+    backgroundColor: BrandColors.background,
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    borderRadius: 6,
+    marginTop: 4,
   },
 });
