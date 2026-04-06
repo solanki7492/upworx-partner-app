@@ -5,7 +5,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export default function RateUsScreen() {
+export default function MyRatingsScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
 
@@ -18,7 +18,7 @@ export default function RateUsScreen() {
         >
           <Ionicons name="arrow-back" size={24} color={BrandColors.text} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Rate Us / Feedback</Text>
+        <Text style={styles.headerTitle}>My Ratings</Text>
         <View style={{ width: 24 }} />
       </View>
 
@@ -33,8 +33,7 @@ export default function RateUsScreen() {
           </View>
           <Text style={styles.comingSoonTitle}>Coming Soon</Text>
           <Text style={styles.comingSoonText}>
-            We're working on bringing you an amazing feedback experience. Stay
-            tuned!
+            We're working hard to bring you this feature. Stay tuned for updates!
           </Text>
         </View>
       </View>

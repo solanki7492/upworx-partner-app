@@ -40,7 +40,7 @@ export default function Login() {
                 // Check if there's a pending redirect, if not, use default navigation
                 const pendingRedirect = await StorageService.getPendingRedirect();
                 if (!pendingRedirect) {
-                    router.replace('/(tabs)/home');
+                    router.replace('/(tabs)');
                 }
                 // If there's a pending redirect, authLogin will handle it
             } else {

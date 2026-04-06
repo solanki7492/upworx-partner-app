@@ -1,11 +1,22 @@
 import { useAuth } from '@/contexts/auth-context';
-import { Redirect } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
+import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 export default function Index() {
   const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
 
-  // Show loading indicator while checking authentication
+  useEffect(() => {
+    if (!isLoading) {
+      if (isAuthenticated) {
+        router.replace('/(tabs)');
+      } else {
+        router.replace('/(auth)/login');
+      }
+    }
+  }, [isAuthenticated, isLoading]);
+
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -14,6 +25,5 @@ export default function Index() {
     );
   }
 
-  // Redirect based on authentication state
-  return <Redirect href={isAuthenticated ? '/(tabs)/home' : '/(auth)/login'} />;
+  return null;
 }

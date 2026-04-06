@@ -79,18 +79,24 @@ const profileMenuItems = [
   },
   {
     id: '11',
-    title: 'Rate Us / Feedback',
+    title: 'My Ratings',
     icon: 'star-outline',
-    route: '/(profile)/rate-us',
+    route: '/(profile)/my-ratings',
   },
   {
     id: '12',
+    title: 'Feedback',
+    icon: 'chatbubble-ellipses-outline',
+    route: '/(profile)/feedback',
+  },
+  {
+    id: '13',
     title: 'Settings',
     icon: 'settings-outline',
     route: '/(profile)/settings',
   },
   {
-    id: '13',
+    id: '14',
     title: 'About',
     icon: 'information-circle-outline',
     route: '/(profile)/about',
