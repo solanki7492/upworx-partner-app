@@ -489,6 +489,24 @@ const LeadsContent = forwardRef<LeadsContentRef, LeadsContentProps>(
             const address = lead.order.address_data;
             const isAssignedToMe = lead.assign_partner_id === user?.id;
 
+            // Check for special status conditions
+            const isCancelledByPartner = lead.pcj_order_item_id === lead.id && lead.pid === user?.id;
+            const isMissed = (lead.assign_partner_id !== user?.id && lead.assign_partner_id !== null) && (!lead.cancel_by_id || lead.pcj_order_item_id === lead.id);
+
+            // Determine status text and color
+            let statusText = lead.order_status.partner_msg;
+            let badgeStyle = styles.badge;
+            let badgeTextStyle = styles.badgeText;
+            if (isCancelledByPartner) {
+              statusText = 'Cancelled by partner';
+              badgeStyle = styles.badgeDanger;
+              badgeTextStyle = styles.badgeTextDanger;
+            } else if (isMissed) {
+              statusText = 'Missed';
+              badgeStyle = styles.badgeDanger;
+              badgeTextStyle = styles.badgeTextDanger;
+            }
+
             return (
               <View key={lead.id} style={styles.card}>
                 {/* Header */}
@@ -498,9 +516,9 @@ const LeadsContent = forwardRef<LeadsContentRef, LeadsContentProps>(
                     <Text style={styles.bookId}>#{lead.package_id}</Text>
                   </View>
 
-                  <View style={styles.badge}>
-                    <Text style={styles.badgeText}>
-                      {lead.order_status.partner_msg}
+                  <View style={badgeStyle}>
+                    <Text style={badgeTextStyle}>
+                      {statusText}
                     </Text>
                   </View>
                 </View>
@@ -704,6 +722,18 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 25,
     justifyContent: 'center',
+  },
+  badgeDanger: {
+    backgroundColor: `${BrandColors.danger}20`,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 25,
+    justifyContent: 'center',
+  },
+  badgeTextDanger: {
+    color: BrandColors.danger,
+    fontWeight: '600',
+    fontSize: 12,
   },
   badgeText: {
     color: BrandColors.primary,

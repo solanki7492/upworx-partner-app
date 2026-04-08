@@ -141,22 +141,6 @@ export default function LedgersContent() {
   const renderItem = ({ item, index }: { item: LedgerItem; index: number }) => {
     const isDebit = item.nature === '1';
 
-    // Calculate running balance up to this point
-    let runningBalance = 0;
-    for (let i = 0; i <= index; i++) {
-      const lead = ledger[i];
-      if (
-        (lead.trans_status === '1' || lead.trans_status === '2') &&
-        (lead.trans_mode === 'online' || lead.trans_mode === 'ledger')
-      ) {
-        if (lead.nature === '2') {
-          runningBalance += lead.amount;
-        } else {
-          runningBalance -= lead.amount;
-        }
-      }
-    }
-
     const statusText =
       item.trans_status === '1'
         ? 'Success'
@@ -297,13 +281,13 @@ export default function LedgersContent() {
               styles.balanceValue,
               {
                 color:
-                  runningBalance >= 0
+                  item.running_balance >= 0
                     ? BrandColors.success
                     : BrandColors.danger,
               },
             ]}
           >
-            ₹ {runningBalance.toFixed(2)}
+            ₹ {item.running_balance.toFixed(2)}
           </Text>
         </View>
       </View>

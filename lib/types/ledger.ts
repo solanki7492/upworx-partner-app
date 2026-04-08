@@ -13,6 +13,7 @@ export interface LedgerItem {
     data?: {
         name?: string;
     };
+    running_balance: number;
 }
 
 export interface LedgerResponse {

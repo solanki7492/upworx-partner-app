@@ -1,11 +1,11 @@
 import PaymentModeSelect from '@/components/ui/payment-mode-select';
 import { useAuth } from '@/contexts/auth-context';
 import {
-  acceptLead,
-  cancelLead,
-  completeLead,
-  CompleteLeadRequest,
-  getLeadDetails,
+    acceptLead,
+    cancelLead,
+    completeLead,
+    CompleteLeadRequest,
+    getLeadDetails,
 } from '@/lib/services/leads';
 import { Lead } from '@/lib/types/lead';
 import { BrandColors } from '@/theme/colors';
@@ -13,15 +13,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Alert,
-  Modal,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Alert,
+    Modal,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -341,25 +341,43 @@ export default function LeadDetailsScreen() {
             <Text style={styles.label}>Booking Date:</Text>
             <Text style={styles.value}>{formatDateTime(lead.created_at)}</Text>
           </View>
-          {lead.order_status && (
-            <View style={styles.statusContainer}>
-              <View
-                style={[
-                  styles.statusBadgeLarge,
-                  { backgroundColor: `${BrandColors.primary}20` },
-                ]}
-              >
-                <Text
+          {lead.order_status && (() => {
+            // Check for special status conditions
+            const isCancelledByPartner = lead.pcj_order_item_id === lead.id && lead.pid === user?.id;
+            const isMissed = (lead.assign_partner_id !== user?.id && lead.assign_partner_id !== null) && (!lead.cancel_by_id || lead.pcj_order_item_id === lead.id);
+            
+            // Determine status text and color
+            let statusText = lead.order_status.partner_msg;
+            let statusColor = BrandColors.primary;
+            
+            if (isCancelledByPartner) {
+              statusText = 'Cancelled by partner';
+              statusColor = BrandColors.danger;
+            } else if (isMissed) {
+              statusText = 'Missed';
+              statusColor = BrandColors.danger;
+            }
+            
+            return (
+              <View style={styles.statusContainer}>
+                <View
                   style={[
-                    styles.statusTextLarge,
-                    { color: BrandColors.primary },
+                    styles.statusBadgeLarge,
+                    { backgroundColor: `${statusColor}20` },
                   ]}
                 >
-                  {lead.order_status.partner_msg}
-                </Text>
+                  <Text
+                    style={[
+                      styles.statusTextLarge,
+                      { color: statusColor },
+                    ]}
+                  >
+                    {statusText}
+                  </Text>
+                </View>
               </View>
-            </View>
-          )}
+            );
+          })()}
         </View>
 
         {/* Section 2 - Services Table */}
