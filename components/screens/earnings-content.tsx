@@ -153,28 +153,7 @@ function EarningCard({
   index: number;
   earnings: EarningData[];
 }) {
-  let runningTotal = 0;
-
-  for (let i = 0; i <= index; i++) {
-    const lead = earnings[i];
-
-    const row =
-      (lead.total_price_after ?? 0) -
-      (lead.deduction ?? 0) -
-      Number(lead.token ?? 0);
-
-    runningTotal += row;
-
-    if (lead.refund_id) {
-      const refund =
-        (lead.refund_deduction ?? 0) +
-        (lead.refund_token ?? 0) -
-        (lead.refund_amount ?? 0);
-
-      runningTotal += refund;
-    }
-  }
-
+  
   const rowEarning =
     (item.total_price_after ?? 0) -
     (item.deduction ?? 0) -
@@ -218,7 +197,7 @@ function EarningCard({
       )}
 
       <Divider />
-      <Row label="Total" value={runningTotal} bold highlighted />
+      <Row label="Total" value={item?.running_earning} bold highlighted />
     </View>
   );
 }

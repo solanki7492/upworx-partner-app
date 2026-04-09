@@ -29,6 +29,7 @@ export interface EarningData {
     refund_token: number | null;
     refund_deduction: number | null;
     refund_amount: number | null;
+    running_earning?: number;
 }
 
 export interface EarningsResponse {

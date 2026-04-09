@@ -9,21 +9,21 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "plugins": [
-    "expo-router",
-    [
-      "expo-splash-screen",
-      {
-        "image": "./assets/icons/splash-icon-dark.png",
-        "imageWidth": 200,
-        "resizeMode": "contain",
-        "backgroundColor": "#ffffff",
-        "dark": {
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
           "image": "./assets/icons/splash-icon-dark.png",
-          "backgroundColor": "#000000"
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "image": "./assets/icons/splash-icon-dark.png",
+            "backgroundColor": "#000000"
+          }
         }
-      }
-    ]
-  ],
+      ]
+    ],
     "splash": {
       "image": "./assets/icons/splash-icon-dark.png",
       "resizeMode": "contain",
@@ -54,7 +54,12 @@
       "permissions": [
         "INTERNET",
         "ACCESS_NETWORK_STATE"
-      ]
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAlfhBRWNU1hrdU7rTNfHp1dm3CkJ6Bsxg"
+        }
+      }
     },
     "extra": {
       "eas": {
